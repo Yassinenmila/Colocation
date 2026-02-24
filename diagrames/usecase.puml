@@ -1,0 +1,83 @@
+@startuml Colocation
+
+left to right direction
+
+actor member 
+actor owner 
+actor admin
+actor user <<abstract>>
+
+member --|> user 
+admin --|> user
+owner --|> member 
+
+
+rectangle "Colocation"{
+
+
+
+    'Authentification 
+    usecase "Se connecter" as login
+    usecase "Deconnection" as logout 
+    usecase "S'inscrire" as signup
+
+    'member 
+    usecase "gestion du profil personnel" as account
+    usecase "rejoindre une colocation" as get_into
+    usecase "quitter une colocation" as quite
+    usecase "ajouter les depenses" as add_resit
+    usecase "voir les depenses" as see_resit
+    usecase "marquer les payements" as marke_resit
+    usecase "Voir les soldes" as see_sold
+
+    'owner 
+    usecase "gestion des colocation" as colocation
+    usecase "creer une colocation" as create_colocation
+    usecase "gestion des membres dans colocation" as gestion_membre
+    usecase "inviter des membres" as invite
+    usecase "retirer des membres" as kick
+    usecase "annuler une colocation" as cancel
+
+    'admin
+    usecase "gestion des comptes" as gestion_account
+    usecase "voir les statistiques globals" as statistic
+    usecase "bannir un utilisateur" as Ban
+    usecase "debannir un utilisateur" as unban
+
+}
+
+'user 
+user --> login 
+user --> logout 
+user --> signup 
+user --> colocation
+
+'membre  relation
+
+member --> account
+
+account <.. get_into : <<extend>>
+account <.. quite : <<extend>>
+account <.. add_resit : <<extend>>
+account <.. see_resit : <<extend>>
+account <.. marke_resit :<<extend>>
+account <.. see_sold : <<extend>>
+
+'owner relation
+colocation ..> login : <<include>>
+colocation <.. create_colocation :<<extend>>
+colocation <.. cancel : <<extend>>
+owner --> gestion_membre
+gestion_membre ..> login : <<include>>
+gestion_membre <.. invite : <<extend>>
+gestion_membre <.. kick : <<extend>>
+
+'admin relation 
+admin --> gestion_account
+gestion_account ..> login : <<include>>
+gestion_account <.. Ban : <<extend>>
+gestion_account <.. unban : <<extend>>
+admin --> statistic
+statistic ..> login : <<include>>
+
+@enduml
