@@ -1,0 +1,58 @@
+@startuml colocation 
+
+abstract class User {
+
+    name : string 
+    email : string 
+    password : string 
+    role : string 
+    reputation : int 
+    is_banned : boolean
+}
+
+class Colocation {
+    name : string 
+    status: string
+}
+
+class Membership{
+    role : string 
+}
+
+class Depense {
+    title : string 
+    amount : decimal
+    date : date 
+}
+
+class Category {
+    name : string 
+}
+
+class Payment {
+    amount : decimal
+    commentaire : text 
+}
+
+class Invitation {
+
+    email : string 
+    token : string
+    status : string 
+}
+
+' Relations
+User "1" -- "1" Membership
+Colocation "1" -- "0..*" Membership
+
+Colocation "1" -- "0..*" Depense 
+Colocation "1" -- "0..*" Category
+Colocation "1" -- "0..*" Invitation
+
+User "1" -- "0..*" Depense : payer
+Category "1" -- "0..*" Depense
+
+User "1" -- "0..*" Payment
+Colocation "1" -- "0..*" Payment
+
+@enduml
