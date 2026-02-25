@@ -13,6 +13,10 @@ class Invitation extends Model
         'token',
         'status',
         'colocation_id',
-        'expired_at',
     ];
+
+    public function colocation()
+    {
+        return $this->belongsTo(Colocation::class);
+    }
 }

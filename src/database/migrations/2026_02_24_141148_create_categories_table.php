@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('colocation_id')->references('id')->on('colocations')->onDelete('cascade');
             $table->timestamps();
+            $table->unique(['name', 'colocation_id']);
         });
     }
 

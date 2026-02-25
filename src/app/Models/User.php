@@ -41,10 +41,21 @@ class User extends Authenticatable
 
     public function membreships()
     {
-        return $this->hasMany(Membreship::class);
+        return $this->hasOne(Membreship::class);
     }
 
-    public function activeMembreship()
+    public finction depenses()
     {
-        return $this->hasOne(Membreship::class)->whereNull('left_at');
+        return $this->hasMany(Depense::class);
+    }
+
+    public function paymentsFrom()
+    {
+        return $this->hasMany(Payment::class, 'from_user_id');
+    }
+
+    public function paymentsTo()
+    {
+        return $this->hasMany(Payment::class, 'to_user_id');
+    }
 }

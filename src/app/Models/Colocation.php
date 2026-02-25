@@ -13,4 +13,30 @@ class Colocation extends Model
         'status',
         'owner_id',
     ];
+
+    public function membreships()
+    {
+        return $this->hasMany(Membreship::class);
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    public function depenses()
+    {
+        return $this->hasMany(Depense::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Categorie::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
 }

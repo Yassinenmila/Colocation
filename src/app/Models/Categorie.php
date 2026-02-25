@@ -12,4 +12,14 @@ class Categorie extends Model
         'name',
         'colocation_id',
     ];
+
+    public function colocation()
+    {
+        return $this->belongsTo(Colocation::class);
+    }
+
+    public function depenses()
+    {
+        return $this->hasMany(Depense::class);
+    }
 }

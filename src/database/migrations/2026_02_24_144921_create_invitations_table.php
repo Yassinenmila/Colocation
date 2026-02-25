@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('token');
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->foreignId('colocation_id')->references('id')->on('colocations')->onDelete('cascade');
-            $table->date('expired_at');
             $table->timestamps();
         });
     }
