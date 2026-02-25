@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('colocation_id')->references('id')->on('colocations')->onDelete('cascade');
             $table->enum('role', ['owner','member'])->nullable();
             $table->date('joined_at');
-            $table->date('left_at');
+            $table->date('left_at')->nullable();
             $table->timestamps();
             $table->unique(['user_id', 'colocation_id']);
         });

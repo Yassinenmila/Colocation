@@ -15,4 +15,6 @@ class Membreship extends Model
         'joined_at',
         'left_at',
     ];
+
+    
 }
