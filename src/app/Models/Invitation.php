@@ -10,7 +10,9 @@ class Invitation extends Model
 
     protected $fillable = [
         'email',
+        'token',
+        'status',
         'colocation_id',
-        'from_user_id',
+        'expired_at',
     ];
 }
