@@ -44,5 +44,7 @@ class User extends Authenticatable
         return $this->hasMany(Membreship::class);
     }
 
-    
+    public function activeMembreship()
+    {
+        return $this->hasOne(Membreship::class)->whereNull('left_at');
 }

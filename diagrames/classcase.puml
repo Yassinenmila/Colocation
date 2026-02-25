@@ -52,7 +52,8 @@ Colocation "1" -- "0..*" Invitation
 User "1" -- "0..*" Depense : payer
 Category "1" -- "0..*" Depense
 
-User "1" -- "0..*" Payment
+User "1" -- "0..*" Payment : from_user
+User "1" -- "0..*" Payment : to_user
 Colocation "1" -- "0..*" Payment
 
 @enduml
