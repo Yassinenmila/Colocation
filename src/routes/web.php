@@ -16,7 +16,6 @@ Route::post('/signin', [App\Http\Controllers\AuthController::class, 'signin'])->
 Route::middleware(['auth', 'banned','role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/',[App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+    Route::resource('users', App\Http\Controllers\UserController::class);
 
 });
-
-
