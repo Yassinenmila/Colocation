@@ -30,7 +30,7 @@
         <label class="block text-sm font-medium text-slate-700 mb-2">
           Nom complet
         </label>
-        <input name="name" type="text"
+        <input name="name" type="text" value="{{ old('name') }}"
           placeholder="Votre nom"
           class="w-full px-4 py-3 border border-slate-300 rounded-xl
                  focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -44,7 +44,7 @@
         <label  class="block text-sm font-medium text-slate-700 mb-2">
           Email
         </label>
-        <input name="email" type="email"
+        <input name="email" value="{{ old('email') }}" type="email"
           placeholder="nom@entreprise.fr"
           class="w-full px-4 py-3 border border-slate-300 rounded-xl
                  focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -72,7 +72,7 @@
         <label class="block text-sm font-medium text-slate-700 mb-2">
           Confirmer le mot de passe
         </label>
-        <input name="password_confirmation" type="password"
+        <input name="password_confirmation"  type="password"
           placeholder="••••••••"
           class="w-full px-4 py-3 border border-slate-300 rounded-xl
                  focus:outline-none focus:ring-2 focus:ring-blue-500

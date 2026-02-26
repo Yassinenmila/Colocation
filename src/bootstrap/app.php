@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
+            'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
             'banned' => \App\Http\Middleware\CheckBanned::class,
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);

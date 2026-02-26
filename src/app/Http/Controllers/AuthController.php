@@ -44,9 +44,7 @@ class AuthController extends Controller
             'role' => $role,
         ]);
 
-        auth()->login($user);
-
-        return redirect()->route('home');
+        return redirect()->route('login')->with('success', 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.');
     }
 
     public function signin(Request $request)

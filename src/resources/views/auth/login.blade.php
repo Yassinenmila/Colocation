@@ -17,6 +17,11 @@
     <p class="text-slate-500 text-sm">
       Connectez-vous à votre espace.
     </p>
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    @endif
 
     <form class="space-y-5" method="POST" action="{{ route('signin') }}">
         @csrf
@@ -28,7 +33,7 @@
         <label class="block text-sm font-medium text-slate-700 mb-2">
           Email
         </label>
-        <input name="email" type="email" placeholder="nom@entreprise.fr" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        <input name="email" type="email" value="{{ old('email') }}" placeholder="nom@entreprise.fr" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
       </div>
 
       <div>

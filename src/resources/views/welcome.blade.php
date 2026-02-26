@@ -30,6 +30,7 @@
                         >
                             Dashboard
                         </a>
+                        
                     @else
                         <a
                             href="{{ route('login') }}"
@@ -45,6 +46,7 @@
                                 Register
                             </a>
                         @endif
+
                     @endauth
                 </nav>
             @endif
