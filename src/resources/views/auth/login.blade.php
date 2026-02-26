@@ -18,17 +18,17 @@
       Connectez-vous à votre espace.
     </p>
 
-    <form class="space-y-5">
-
+    <form class="space-y-5" method="POST" action="{{ route('signin') }}">
+        @csrf
+        @error('email')
+            <div class="text-red-500 text-sm">{{ $message }}</div>
+        @enderror
+      <!-- EMAIL -->
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-2">
           Email
         </label>
-        <input type="email"
-          placeholder="nom@entreprise.fr"
-          class="w-full px-4 py-3 border border-slate-300 rounded-xl
-                 focus:outline-none focus:ring-2 focus:ring-blue-500
-                 focus:border-blue-500 transition">
+        <input name="email" type="email" placeholder="nom@entreprise.fr" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
       </div>
 
       <div>
@@ -40,46 +40,33 @@
             Oublié ?
           </a>
         </div>
-
-        <input type="password"
-          placeholder="••••••••"
-          class="w-full px-4 py-3 border border-slate-300 rounded-xl
-                 focus:outline-none focus:ring-2 focus:ring-blue-500
-                 focus:border-blue-500 transition">
+        @error('password')
+            <div class="text-red-500 text-sm">{{ $message }}</div>
+        @enderror
+        <input name="password" type="password" placeholder="••••••••" class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
       </div>
 
       <div class="flex items-center">
-        <input type="checkbox"
-          class="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+        <input type="checkbox" class="h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
         <label class="ml-2 text-sm text-slate-600">
           Rester connecté
         </label>
       </div>
 
-      <button type="submit"
-        class="w-full bg-slate-900 text-white py-3 rounded-xl
-               font-semibold shadow-md hover:bg-blue-600
-               active:scale-95 transition">
+      <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-xl font-semibold shadow-md hover:bg-blue-600 active:scale-95 transition">
         Se connecter
       </button>
-
     </form>
-
     <p class="text-center text-sm text-slate-600">
       Pas de compte ?
-      <a href="#" class="text-blue-600 font-semibold hover:underline">
+      <a href="{{ route('signup') }}" class="text-blue-600 font-semibold hover:underline">
         Créer un profil
       </a>
     </p>
-
   </div>
 </div>
-
-<!-- SECTION IMAGE -->
 <div class="hidden lg:block lg:w-3/5 relative">
-  <img class="absolute inset-0 w-full h-full object-cover"
-       src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop"
-       alt="Bureau">
+  <img class="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Bureau">
 </div>
 
 </body>

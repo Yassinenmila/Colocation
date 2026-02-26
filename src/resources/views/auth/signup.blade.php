@@ -20,50 +20,59 @@
       Rejoignez NexusFlow et commencez dès aujourd’hui.
     </p>
 
-    <form class="space-y-5">
-
+    <form class="space-y-5" method="POST" action="{{ route('register') }}">
+        @csrf
+        @error('name')
+            <div class="text-red-500 text-sm">{{ $message }}</div>
+        @enderror
       <!-- NAME -->
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-2">
           Nom complet
         </label>
-        <input type="text"
+        <input name="name" type="text"
           placeholder="Votre nom"
           class="w-full px-4 py-3 border border-slate-300 rounded-xl
                  focus:outline-none focus:ring-2 focus:ring-blue-500
                  focus:border-blue-500 transition">
       </div>
-
+        @error('email')
+            <div class="text-red-500 text-sm">{{ $message }}</div>
+        @enderror
       <!-- EMAIL -->
       <div>
-        <label class="block text-sm font-medium text-slate-700 mb-2">
+        <label  class="block text-sm font-medium text-slate-700 mb-2">
           Email
         </label>
-        <input type="email"
+        <input name="email" type="email"
           placeholder="nom@entreprise.fr"
           class="w-full px-4 py-3 border border-slate-300 rounded-xl
                  focus:outline-none focus:ring-2 focus:ring-blue-500
                  focus:border-blue-500 transition">
       </div>
-
+        @error('password')
+            <div class="text-red-500 text-sm">{{ $message }}</div>
+        @enderror
       <!-- PASSWORD -->
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-2">
           Mot de passe
         </label>
-        <input type="password"
+        <input name="password" type="password"
           placeholder="••••••••"
           class="w-full px-4 py-3 border border-slate-300 rounded-xl
                  focus:outline-none focus:ring-2 focus:ring-blue-500
                  focus:border-blue-500 transition">
       </div>
-
+        @error('password_confirmation')
+            <div class="text-red-500 text-sm">{{ $message }}</div>
+        @enderror
       <!-- CONFIRM PASSWORD -->
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-2">
           Confirmer le mot de passe
         </label>
-        <input type="password"
+        <input name="password_confirmation" type="password"
           placeholder="••••••••"
           class="w-full px-4 py-3 border border-slate-300 rounded-xl
                  focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -94,7 +103,7 @@
 
     <p class="text-center text-sm text-slate-600">
       Déjà inscrit ?
-      <a href="#" class="text-blue-600 font-semibold hover:underline">
+      <a href="{{ route('login') }}" class="text-blue-600 font-semibold hover:underline">
         Se connecter
       </a>
     </p>
