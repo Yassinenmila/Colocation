@@ -4,40 +4,52 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Colocation;
+use App\Models\Membreship;
 
 class ColocationController extends Controller
 {
 
     public function index()
     {
-        //
+        $user= auth()->user();
+
+        if (!$user->membreships) {
+            return redirect()->route('colocations.create');
+        }
+
+    return redirect()->route('colocations.show', $user->membreships->colocation_id);
+
+
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('colocation.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        $colocarion = Colocation::create([
+        $user = auth()->user();
+
+        $colocation = Colocation::create([
             'name' => $request->name,
-            'owner_id' => auth()->user()->id(),
+            'owner_id' => $user->id,
         ]);
 
+        $membre=Membreship::create([
+            'user_id' => $user->id,
+            'colocation_id' => $colocation->id,
+            'role' => 'owner',
+            'joined_at' => now(),
+            'left_at'=>null,
+        ]);
 
-
-        return redirect()->route('home')->with('success', 'Colocation créée avec succès.');
+        return redirect()->route('colocations.index')->with('success', 'Colocation créée avec succès.');
     }
 
     /**
@@ -45,7 +57,10 @@ class ColocationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $colocation = Colocation::with(['membreships.user', 'depenses', 'categories', 'invitations'])
+            ->findOrFail($id);
+
+        return view('colocation.show', compact('colocation'));
     }
 
     /**

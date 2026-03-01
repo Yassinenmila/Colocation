@@ -46,6 +46,7 @@
                 @if($user->is_banned)
                     <form action="{{ route('admin.users.update', $user) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <button type="submit" class="w-full border border-emerald-500 text-emerald-600 px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-50 transition">
                             <i class="fas fa-undo mr-2"></i> Réactiver
                         </button>
@@ -53,6 +54,7 @@
                 @else
                     <form action="{{ route('admin.users.update', $user) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <button type="submit" class="w-full border border-red-200 text-red-600 px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-red-50 transition">
                             <i class="fas fa-ban mr-2"></i> Bannir
                         </button>

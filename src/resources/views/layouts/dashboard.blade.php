@@ -23,37 +23,18 @@
                 <span>Coloc.</span>
             </div>
 
-            <div class="relative group">
-                <button class="relative p-2 text-gray-400 hover:text-emerald-500 transition">
-                    <i class="fas fa-bell text-xl"></i>
-                    <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                </button>
-
-                <div class="absolute left-0 mt-2 w-72 bg-white rounded-3xl shadow-2xl border border-gray-100 p-5 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-[100]">
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Invitations (1)</p>
-
-                    <div class="flex gap-3 items-start">
-                        <img src="https://ui-avatars.com/api/?name=Thomas&background=1CC29F&color=fff" class="w-10 h-10 rounded-xl shadow-sm">
-                        <div class="flex-1">
-                            <p class="text-[11px] leading-tight text-gray-600">
-                                <span class="font-bold text-gray-900">Thomas</span> t'invite dans <br>
-                                <span class="font-black brand-green italic uppercase">Appart' Marrakech</span>
-                            </p>
-                            <div class="flex gap-2 mt-3">
-                                <button class="bg-brand-green text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase shadow-md shadow-emerald-50">Accepter</button>
-                                <button class="bg-gray-100 text-gray-400 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase hover:bg-red-50 hover:text-red-500 transition">Refuser</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
         <nav class="flex-1 p-4 space-y-2">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-3 mb-2">Menu principal</p>
 
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 p-3 bg-brand-green/10 text-emerald-700 rounded-2xl font-bold transition">
+            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 p-3 bg-brand-green/10 text-emerald-700 rounded-2xl font-bold transition">
                 <i class="fas fa-th-large w-5"></i> Vue d'ensemble
+            </a>
+            <a href="{{ auth()->user()->membreships ? route('colocations.show', auth()->user()->membreships->colocation_id) : route('colocations.create') }}"
+               class="flex items-center gap-3 p-3 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-2xl transition font-semibold">
+                <i class="fas fa-home w-5"></i> Ma colocation
             </a>
             <a href="#" class="flex items-center gap-3 p-3 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-2xl transition font-semibold">
                 <i class="fas fa-receipt w-5"></i> Dépenses

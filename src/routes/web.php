@@ -16,8 +16,13 @@ Route::get('/', function (){
     return redirect()->route('home');
 });
 
-Route::middleware(['auth', 'banned','role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard',[App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
-    Route::resource('users', App\Http\Controllers\UserController::class);
-    Route::resource('colocations', App\Http\Controllers\ColocationController::class);
+// Routes accessibles à TOUS les utilisateurs authentifiés (dashboard, colocations)
+Route::middleware(['auth', 'banned'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+    Route::resource('colocations', App\Http\Controllers\ColocationController::class)->only(['index', 'create', 'store', 'show']);
+});
+
+// Routes réservées aux admins uniquement (gestion des utilisateurs)
+Route::middleware(['auth', 'banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', App\Http\Controllers\UserController::class)->only(['index', 'show', 'update']);
 });
