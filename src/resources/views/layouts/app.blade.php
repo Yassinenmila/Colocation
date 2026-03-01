@@ -31,7 +31,7 @@
 
         <!-- Admin -->
         @if(auth()->user()->role === 'admin')
-            <a href="{{ route('admin') }}"
+            <a href="{{ route('admin.dashboard') }}"
                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg shadow hover:bg-gray-200 transition font-medium">
                Admin
             </a>

@@ -39,10 +39,12 @@
                 <p class="text-gray-400 text-sm mt-6 font-medium italic">Ce nom sera visible par tous les futurs membres.</p>
             </header>
 
-            <form action="#" class="space-y-10">
+            <form action="{{ route('colocations.store') }}" method="POST" class="space-y-10">
+                @csrf
                 <div class="relative group">
                     <input type="text"
                         placeholder="Le nom de la coloc..."
+                        name="name"
                         class="w-full bg-gray-50/50 border-2 border-transparent rounded-[2.5rem] py-8 px-10 text-2xl font-black text-center focus:border-emerald-500 focus:bg-white focus:ring-0 transition-all outline-none text-gray-800 placeholder:text-gray-200 shadow-inner">
                 </div>
 
@@ -52,7 +54,7 @@
                         Créer la colocation <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform"></i>
                     </button>
 
-                    <a href="#" class="text-[10px] font-black text-gray-300 uppercase tracking-widest hover:text-gray-900 transition-colors">
+                    <a href="{{ route('home') }}" class="text-[10px] font-black text-gray-300 uppercase tracking-widest hover:text-gray-900 transition-colors">
                         <i class="fas fa-times mr-2"></i> Annuler la création
                     </a>
                 </div>
