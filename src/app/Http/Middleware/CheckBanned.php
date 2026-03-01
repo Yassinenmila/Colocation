@@ -12,7 +12,7 @@ class CheckBanned
     {
         if (auth()->check() && auth()->user()->is_banned) {
             auth()->logout();
-            return redirect()->route('login')->withErrors(['email' => 'Your account has been banned. Please contact support for more information.']);
+            return redirect()->route('login')->withErrors(['email' => 'Votre compte a été banni. Veuillez contacter le support pour plus d\'informations.']);
         }
         return $next($request);
     }

@@ -22,9 +22,19 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::findOrFail($id);
+
+        // Empêcher un admin de se bannir lui-même
+        if ($user->id === auth()->id()) {
+            return redirect()->back()->with('error', 'Vous ne pouvez pas bannir votre propre compte.');
+        }
+
         $user->is_banned = !$user->is_banned;
         $user->save();
 
-        return redirect()->back()->with('success', 'Statut de l\'utilisateur mis à jour avec succès.');
+        $message = $user->is_banned
+            ? "L'utilisateur {$user->name} a été banni. Il ne pourra plus accéder à la plateforme."
+            : "L'utilisateur {$user->name} a été réactivé avec succès.";
+
+        return redirect()->back()->with('success', $message);
     }
 }

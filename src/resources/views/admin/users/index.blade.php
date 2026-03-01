@@ -60,7 +60,9 @@
 
                             {{-- IMPORTANT : On ajoute onclick="event.stopPropagation()" pour éviter de déclencher le lien du profil quand on clique sur un bouton --}}
                             <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
-                                @if($user->is_banned)
+                                @if($user->id === auth()->id())
+                                    <span class="text-xs text-gray-400 italic">Vous</span>
+                                @elseif($user->is_banned)
                                     <form action="{{ route('admin.users.update', $user) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PUT')
@@ -69,7 +71,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <form action="{{ route('admin.users.update', $user) }}" method="POST" class="inline">
+                                    <form action="{{ route('admin.users.update', $user) }}" method="POST" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir bannir {{ addslashes($user->name) }} ?');">
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" class="text-gray-400 hover:text-red-600 transition p-2" title="Bannir">

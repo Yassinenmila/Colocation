@@ -64,6 +64,16 @@
     </aside>
 
     <main class="flex-1 h-screen overflow-y-auto bg-[#F9FAFB]">
+        @if(session('success'))
+            <div class="mx-6 mt-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-sm font-medium flex items-center gap-2">
+                <i class="fas fa-check-circle text-emerald-500"></i> {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="mx-6 mt-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl text-sm font-medium flex items-center gap-2">
+                <i class="fas fa-exclamation-circle text-red-500"></i> {{ session('error') }}
+            </div>
+        @endif
         @yield('dashboard-content')
     </main>
 

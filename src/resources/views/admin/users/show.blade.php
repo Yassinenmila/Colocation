@@ -37,13 +37,15 @@
                     </div>
                     <div class="bg-gray-50 px-4 py-2 rounded-xl border border-gray-100 text-sm">
                         <span class="text-gray-400 block text-[10px] uppercase font-bold">Colocation</span>
-                        <span class="font-bold brand-green">{{ $user->colocation->name ?? 'Aucune' }}</span>
+                        <span class="font-bold brand-green">{{ $user->colocation?->name ?? 'Aucune' }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="flex flex-col gap-2 w-full md:w-auto">
-                @if($user->is_banned)
+                @if($user->id === auth()->id())
+                    <span class="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-400 text-sm font-medium italic">Votre profil</span>
+                @elseif($user->is_banned)
                     <form action="{{ route('admin.users.update', $user) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -52,7 +54,7 @@
                         </button>
                     </form>
                 @else
-                    <form action="{{ route('admin.users.update', $user) }}" method="POST">
+                    <form action="{{ route('admin.users.update', $user) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir bannir {{ addslashes($user->name) }} ?');">
                         @csrf
                         @method('PUT')
                         <button type="submit" class="w-full border border-red-200 text-red-600 px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-red-50 transition">
