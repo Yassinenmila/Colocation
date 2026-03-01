@@ -37,7 +37,13 @@
                     </div>
                     <div class="bg-gray-50 px-4 py-2 rounded-xl border border-gray-100 text-sm">
                         <span class="text-gray-400 block text-[10px] uppercase font-bold">Colocation</span>
-                        <span class="font-bold brand-green">{{ $user->colocation?->name ?? 'Aucune' }}</span>
+                        @if($user->colocation)
+                            <a href="{{ route('colocations.show', $user->colocation) }}" class="font-bold brand-green hover:underline">
+                                {{ $user->colocation->name }}
+                            </a>
+                        @else
+                            <span class="font-bold text-gray-400 italic">Aucune</span>
+                        @endif
                     </div>
                 </div>
             </div>

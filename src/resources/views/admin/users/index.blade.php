@@ -54,8 +54,14 @@
                                 {{ $user->created_at->format('d M Y') }}
                             </td>
 
-                            <td class="px-6 py-4 text-sm {{ $user->colocation ? 'text-gray-900 font-bold' : 'text-gray-400 italic' }}">
-                                {{ $user->colocation->name ?? '— Aucun —' }}
+                            <td class="px-6 py-4 text-sm" onclick="event.stopPropagation()">
+                                @if($user->colocation)
+                                    <a href="{{ route('colocations.show', $user->colocation) }}" class="font-bold brand-green hover:underline">
+                                        {{ $user->colocation->name }}
+                                    </a>
+                                @else
+                                    <span class="text-gray-400 italic">— Aucun —</span>
+                                @endif
                             </td>
 
                             {{-- IMPORTANT : On ajoute onclick="event.stopPropagation()" pour éviter de déclencher le lien du profil quand on clique sur un bouton --}}

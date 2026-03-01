@@ -25,6 +25,9 @@
 
     <form class="space-y-5" method="POST" action="{{ route('signin') }}">
         @csrf
+        @if(!empty($redirect ?? request()->get('redirect')))
+            <input type="hidden" name="redirect" value="{{ $redirect ?? request()->get('redirect') }}">
+        @endif
         @error('email')
             <div class="text-red-500 text-sm">{{ $message }}</div>
         @enderror

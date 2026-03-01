@@ -9,8 +9,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.users.index',compact('users'));
+        $users = User::with('colocation')
+            ->where('id', '!=', auth()->id()) // on ne liste pas le compte connecté (admin)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin.users.index', compact('users'));
     }
 
     public function show(string $id)

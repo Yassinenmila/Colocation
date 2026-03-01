@@ -16,13 +16,17 @@ Route::get('/', function (){
     return redirect()->route('home');
 });
 
-// Routes accessibles à TOUS les utilisateurs authentifiés (dashboard, colocations)
+// Page d'invitation (accessible sans auth pour permettre le lien par email)
+Route::get('/invitations/{token}', [App\Http\Controllers\InvitationController::class, 'show'])->name('invitations.show');
+
 Route::middleware(['auth', 'banned'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
     Route::resource('colocations', App\Http\Controllers\ColocationController::class)->only(['index', 'create', 'store', 'show']);
+    Route::post('/invitations', [App\Http\Controllers\InvitationController::class, 'store'])->name('invitations.store');
+    Route::post('/invitations/{token}/accept', [App\Http\Controllers\InvitationController::class, 'accept'])->name('invitations.accept');
+    Route::post('/invitations/{token}/reject', [App\Http\Controllers\InvitationController::class, 'reject'])->name('invitations.reject');
 });
 
-// Routes réservées aux admins uniquement (gestion des utilisateurs)
 Route::middleware(['auth', 'banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', App\Http\Controllers\UserController::class)->only(['index', 'show', 'update']);
 });

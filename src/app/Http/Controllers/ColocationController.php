@@ -25,6 +25,19 @@ class ColocationController extends Controller
 
     public function create()
     {
+        $user = auth()->user();
+
+        // Un utilisateur déjà membre ou owner d'une colocation ne peut pas en créer une autre
+        $hasActiveColocation = Membreship::where('user_id', $user->id)
+            ->whereNull('left_at')
+            ->exists();
+
+        if ($hasActiveColocation) {
+            $membership = Membreship::where('user_id', $user->id)->whereNull('left_at')->first();
+            return redirect()->route('colocations.show', $membership->colocation_id)
+                ->with('error', 'Vous êtes déjà membre d\'une colocation. Vous devez la quitter avant d\'en créer une nouvelle.');
+        }
+
         return view('colocation.create');
     }
 
@@ -35,6 +48,15 @@ class ColocationController extends Controller
         ]);
 
         $user = auth()->user();
+
+        // Un utilisateur déjà membre ou owner d'une colocation ne peut pas en créer une autre
+        $hasActiveColocation = Membreship::where('user_id', $user->id)
+            ->whereNull('left_at')
+            ->exists();
+
+        if ($hasActiveColocation) {
+            return redirect()->back()->with('error', 'Vous êtes déjà membre d\'une colocation. Vous devez la quitter avant d\'en créer une nouvelle.');
+        }
 
         $colocation = Colocation::create([
             'name' => $request->name,
@@ -57,8 +79,22 @@ class ColocationController extends Controller
      */
     public function show(string $id)
     {
-        $colocation = Colocation::with(['membreships.user', 'depenses', 'categories', 'invitations'])
-            ->findOrFail($id);
+        $colocation = Colocation::with([
+            'membreships.user',
+            'depenses.user',
+            'depenses.category',
+            'categories',
+            'invitations',
+            'payments.fromUser',
+            'payments.toUser',
+        ])->findOrFail($id);
+
+        // Admin peut voir toute colocation, les users uniquement la leur
+        $user = auth()->user();
+        $isMember = $colocation->membreships->contains('user_id', $user->id);
+        if (!$isMember && $user->role !== 'admin') {
+            abort(403, 'Vous n\'avez pas accès à cette colocation.');
+        }
 
         return view('colocation.show', compact('colocation'));
     }

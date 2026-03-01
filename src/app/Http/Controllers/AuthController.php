@@ -7,9 +7,9 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
-        return view('auth.login');
+        return view('auth.login', ['redirect' => $request->input('redirect')]);
     }
 
     public function signup()
@@ -56,6 +56,10 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
+            $redirect = $request->input('redirect');
+            if ($redirect && str_starts_with($redirect, url('/'))) {
+                return redirect($redirect);
+            }
             return redirect()->route('home');
         }
 
