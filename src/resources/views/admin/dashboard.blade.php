@@ -32,6 +32,7 @@
         </header>
 
         @if($colocation)
+            {{-- Stats Colocation --}}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
                 <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                     <p class="text-gray-400 text-sm font-medium uppercase mb-2">Total dépenses</p>
@@ -71,11 +72,17 @@
                 </div>
             </div>
 
+            {{-- Dépenses et Paiements --}}
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
+                {{-- Dernières Dépenses --}}
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div class="p-6 border-b border-gray-50 flex justify-between items-center">
                         <h2 class="font-bold text-gray-800">Dernières dépenses</h2>
+                        <a href="{{ route('depenses.create') }}"
+                           class="px-4 py-2 bg-brand-green text-white rounded hover:bg-emerald-600 transition text-sm font-medium">
+                           + Ajouter une dépense
+                        </a>
                     </div>
                     <div class="divide-y divide-gray-50">
                         @forelse($lastDepenses as $depense)
@@ -87,15 +94,18 @@
                                     <div>
                                         <p class="text-sm font-bold">{{ $depense->title }}</p>
                                         <p class="text-[11px] text-gray-400 italic">
-                                            Payé par {{ $depense->user->name ?? '—' }}
-                                            • {{ $depense->created_at->format('d M Y') }}
+                                            Payé par {{ $depense->user->name ?? '—' }} • {{ $depense->created_at->format('d M Y') }}
                                         </p>
                                     </div>
                                 </div>
-                                <div class="text-right">
+                                <div class="flex flex-col items-end gap-2">
                                     <p class="text-sm font-bold">
                                         {{ number_format($depense->amount, 2, ',', ' ') }} €
                                     </p>
+                                    <a href="{{ route('depenses.regler', $depense->id) }}"
+                                       class="px-3 py-1 text-xs bg-brand-green text-white rounded hover:bg-emerald-600 transition">
+                                       Régler
+                                    </a>
                                 </div>
                             </div>
                         @empty
@@ -106,7 +116,10 @@
                     </div>
                 </div>
 
+                {{-- Membres + Derniers Paiements --}}
                 <div class="space-y-6">
+
+                    {{-- Membres --}}
                     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <h2 class="font-bold text-gray-800 mb-6">Membres du foyer</h2>
                         <div class="space-y-4">
@@ -129,8 +142,15 @@
                         </div>
                     </div>
 
+                    {{-- Derniers Paiements --}}
                     <div class="bg-brand-green p-6 rounded-2xl shadow-lg text-white">
-                        <h2 class="font-bold mb-4">Derniers paiements</h2>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="font-bold">Derniers paiements</h2>
+                            <a href="{{ route('payments.create') }}"
+                               class="px-4 py-2 bg-white text-brand-green rounded hover:bg-gray-100 transition text-sm font-medium">
+                               + Ajouter un paiement
+                            </a>
+                        </div>
                         @forelse($lastPayments as $payment)
                             <div class="flex items-start justify-between mb-3">
                                 <div>
@@ -142,9 +162,15 @@
                                     @endif
                                     <p class="text-[10px] opacity-70 mt-1">{{ $payment->created_at->format('d M Y H:i') }}</p>
                                 </div>
-                                <p class="font-extrabold">
-                                    {{ number_format($payment->amount, 2, ',', ' ') }} €
-                                </p>
+                                <div class="flex flex-col items-end gap-2">
+                                    <p class="font-extrabold">
+                                        {{ number_format($payment->amount, 2, ',', ' ') }} €
+                                    </p>
+                                    <a href="{{ route('payments.regler', $payment->id) }}"
+                                       class="px-3 py-1 text-xs bg-white text-brand-green rounded hover:bg-gray-100 transition">
+                                       Régler
+                                    </a>
+                                </div>
                             </div>
                         @empty
                             <p class="text-sm opacity-80 italic">Aucun paiement enregistré pour le moment.</p>

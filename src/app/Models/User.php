@@ -39,15 +39,11 @@ class User extends Authenticatable
         ];
     }
 
-    public function membreships()
+    public function membreship()
     {
-        return $this->hasOne(Membreship::class);
+        return $this->hasOne(Membreship::class, 'user_id');
     }
 
-    public function colocation()
-    {
-        return $this->hasOneThrough(Colocation::class, Membreship::class);
-    }
 
     public function depenses()
     {

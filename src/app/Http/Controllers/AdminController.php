@@ -12,7 +12,6 @@ class AdminController extends Controller
     {
         $user = auth()->user();
 
-        // Colocation actuelle de l'utilisateur (si membre d'une coloc active)
         $membership = Membreship::where('user_id', $user->id)
             ->whereNull('left_at')
             ->first();

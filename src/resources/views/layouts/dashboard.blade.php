@@ -36,9 +36,11 @@
                class="flex items-center gap-3 p-3 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-2xl transition font-semibold">
                 <i class="fas fa-home w-5"></i> Ma colocation
             </a>
-            <a href="#" class="flex items-center gap-3 p-3 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-2xl transition font-semibold">
-                <i class="fas fa-receipt w-5"></i> Dépenses
-            </a>
+            @if(auth()->user()->membreship && auth()->user()->membreship->role === 'owner')
+                <a href="{{ route('categories.index', auth()->user()->membreship->colocation_id) }}" class="flex items-center gap-3 p-3 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-2xl transition font-semibold">
+                    <i class="fas fa-crown w-5"></i> Gérer les categories
+                </a>
+            @endif
 
             @if(auth()->user()->role === 'admin')
                 <div class="pt-6">
@@ -48,6 +50,7 @@
                     </a>
                 </div>
             @endif
+
         </nav>
 
         <div class="p-4 border-t border-gray-50">

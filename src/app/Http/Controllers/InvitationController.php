@@ -11,7 +11,10 @@ use Illuminate\Support\Str;
 
 class InvitationController extends Controller
 {
-
+    /**
+     * Envoyer une invitation à un utilisateur par email.
+     * Un utilisateur ne peut être invité que s'il n'est pas déjà dans une autre colocation.
+     */
     public function store(Request $request)
     {
         $request->validate([
