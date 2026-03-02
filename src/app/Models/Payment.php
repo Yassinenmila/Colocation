@@ -32,4 +32,8 @@ class Payment extends Model
     {
         return $this->belongsTo(Colocation::class);
     }
+    public function depense()
+    {
+        return $this->belongsTo(Depense::class);
+    }
 }

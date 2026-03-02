@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('from_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('to_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('colocation_id')->references('id')->on('colocations')->onDelete('cascade');
+            $table->foreignId('depense_id')->nullable()->references('id')->on('depenses')->onDelete('set null');
             $table->timestamps();
         });
     }

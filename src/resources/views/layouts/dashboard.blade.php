@@ -20,7 +20,7 @@
         <div class="p-6 flex items-center justify-between border-b border-gray-50">
             <div class="flex items-center gap-2 text-2xl font-black brand-green italic">
                 <i class="fas fa-home"></i>
-                <span>Coloc.</span>
+                <a href="{{ route('home') }}"><span>Coloc.</span></a>
             </div>
 
             </div>

@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Categorie;
-use App\Models\Depense;
 
-class DepenseController extends Controller
+class PaymentController extends Controller
 {
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $categories= Categorie::with('colocation')->get();
-        return view('depenses.create', compact('categories'));
+        $user = auth()->user();
+        $colocation_id = $user->membreship?->colocation_id;
+        $users= $user->membreship?->colocation?->membreships?->pluck('user')->where('id', '!=', $user->id) ?? collect();
+
+        return view('payments.create' , compact('colocation_id', 'users'));
     }
 
     /**
@@ -24,19 +24,16 @@ class DepenseController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-        'title' => 'required|string|max:255',
-        'amount' => 'required|numeric|min:0',
-        'description' => 'nullable|string|max:500',
-        'category_id' => 'required|exists:categories,id',
-    ]);
+            'amount' => 'required|numeric|min:0',
+            'to_user_id' => 'required|exists:users,id',
+        ]);
 
-    $validatedData['user_id'] = auth()->id();
-    $validatedData['colocation_id'] = auth()->user()->membreship->colocation_id;
-    $validatedData['status'] = 'non_regle'; // Par défaut
+        $validatedData['from_user_id'] = auth()->id();
+        $validatedData['colocation_id'] = auth()->user()->membreship->colocation_id;
 
-    Depense::create($validatedData);
+        \App\Models\Payment::create($validatedData);
 
-    return redirect()->route('dashboard')->with('success', 'Dépense créée avec succès !');
+        return redirect()->route('dashboard')->with('success', 'Paiement enregistré avec succès !');
     }
 
     /**

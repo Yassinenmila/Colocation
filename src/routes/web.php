@@ -25,6 +25,10 @@ Route::middleware(['auth', 'banned'])->group(function () {
     Route::resource('categories', App\Http\Controllers\CategorieController::class);
     Route::resource('depenses', App\Http\Controllers\DepenseController::class);
     Route::resource('payments', App\Http\Controllers\PaymentController::class);
+    Route::post('/colocations/leave', [App\Http\Controllers\MemberController::class, 'leave'])->name('colocations.leave');
+    Route::delete('/members/{id}/remove', [App\Http\Controllers\MemberController::class, 'remove'])->name('members.remove');
+    Route::patch('/members/{id}/ban', [App\Http\Controllers\MemberController::class, 'ban'])->name('members.ban');
+    Route::patch('/members/{id}/unban', [App\Http\Controllers\MemberController::class, 'unban'])->name('members.unban');
     Route::post('/invitations', [App\Http\Controllers\InvitationController::class, 'store'])->name('invitations.store');
     Route::post('/invitations/{token}/accept', [App\Http\Controllers\InvitationController::class, 'accept'])->name('invitations.accept');
     Route::post('/invitations/{token}/reject', [App\Http\Controllers\InvitationController::class, 'reject'])->name('invitations.reject');

@@ -14,7 +14,6 @@ class Depense extends Model
         'title',
         'amount',
         'description',
-        'date',
         'category_id',
         'user_id',
         'colocation_id',

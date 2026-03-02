@@ -12,11 +12,31 @@
                     <p class="text-gray-500">
                         Voici un aperçu de ta colocation <span class="font-bold">{{ $colocation->name }}</span>.
                     </p>
+                    <div class="mt-6 flex gap-4">
+    @if($membership->role === 'owner')
+        <form action="{{ route('colocations.destroy', $colocation->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment annuler la colocation ?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded font-bold">
+                Annuler la colocation
+            </button>
+        </form>
+    @else
+        <form action="{{ route('colocations.leave') }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment quitter la colocation ?');">
+            @csrf
+            @method('POST')
+            <button type="submit" class="px-4 py-2 bg-gray-400 text-white rounded font-bold">
+                Quitter la colocation
+            </button>
+        </form>
+    @endif
+</div>
                 @else
                     <p class="text-gray-500">
                         Tu n'as pas encore de colocation active. Crée-en une ou accepte une invitation.
                     </p>
                 @endif
+
             </div>
             @if($colocation)
                 <a href="{{ route('colocations.show', $colocation->id) }}"
@@ -85,34 +105,34 @@
                         </a>
                     </div>
                     <div class="divide-y divide-gray-50">
-                        @forelse($lastDepenses as $depense)
-                            <div class="p-4 flex items-center justify-between hover:bg-gray-50 transition">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-gray-400">
-                                        <i class="fas fa-receipt"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-bold">{{ $depense->title }}</p>
-                                        <p class="text-[11px] text-gray-400 italic">
-                                            Payé par {{ $depense->user->name ?? '—' }} • {{ $depense->created_at->format('d M Y') }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col items-end gap-2">
-                                    <p class="text-sm font-bold">
-                                        {{ number_format($depense->amount, 2, ',', ' ') }} €
-                                    </p>
-                                    <a href="{{ route('depenses.regler', $depense->id) }}"
-                                       class="px-3 py-1 text-xs bg-brand-green text-white rounded hover:bg-emerald-600 transition">
-                                       Régler
-                                    </a>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="p-6 text-center text-gray-400 text-sm italic">
-                                Aucune dépense enregistrée pour le moment.
-                            </div>
-                        @endforelse
+                       @foreach($lastDepenses as $depense)
+    <div class="bg-white p-4 rounded-lg shadow-sm mb-4">
+        <div class="flex justify-between mb-2">
+            <p class="font-bold">{{ $depense->title }} ({{ number_format($depense->amount,2,',',' ') }} DH)</p>
+            <p class="text-xs text-gray-400">{{ $depense->created_at->format('d M Y') }}</p>
+        </div>
+
+        @foreach($members as $member)
+            @if($member->id !== $depense->user_id) {{-- pas le créateur --}}
+                <div class="flex justify-between items-center mb-1">
+                    <span>{{ $member->name }}</span>
+                    <form action="{{ route('payments.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="from_user_id" value="{{ $member->id }}">
+                        <input type="hidden" name="to_user_id" value="{{ $depense->user_id }}">
+                        <input type="hidden" name="colocation_id" value="{{ $colocation->id }}">
+                        <input type="hidden" name="depense_id" value="{{ $depense->id }}">
+                        <input type="hidden" name="amount" value="{{ $depense->part }}"> {{-- montant fixe --}}
+                        <button type="submit"
+                                class="px-3 py-1 bg-green-600 text-white rounded text-xs font-bold">
+                            Rembourser {{ number_format($depense->part,2,',',' ') }} DH
+                        </button>
+                    </form>
+                </div>
+            @endif
+        @endforeach
+    </div>
+@endforeach
                     </div>
                 </div>
 
@@ -123,22 +143,26 @@
                     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <h2 class="font-bold text-gray-800 mb-6">Membres du foyer</h2>
                         <div class="space-y-4">
-                            @forelse($colocation->membreships as $m)
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs italic">
-                                            {{ strtoupper(substr($m->user->name, 0, 1)) }}
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-600">{{ $m->user->name }}</span>
-                                    </div>
-                                    <span class="text-xs px-2 py-1 rounded italic font-medium
-                                        {{ $m->role === 'owner' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500' }}">
-                                        {{ $m->role === 'owner' ? 'Propriétaire' : 'Membre' }}
-                                    </span>
-                                </div>
-                            @empty
-                                <p class="text-sm text-gray-400 italic">Aucun autre membre.</p>
-                            @endforelse
+                           @foreach($colocation->membreships as $m)
+    <div class="flex items-center justify-between mb-2">
+        <span>{{ $m->user->name }}</span>
+        <span class="text-xs px-2 py-1 rounded italic font-medium
+            {{ $m->role === 'owner' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500' }}">
+            {{ $m->role === 'owner' ? 'Propriétaire' : 'Membre' }}
+        </span>
+
+        @if($membership && $membership->role === 'owner' && $m->role !== 'owner')
+            <form action="{{ route('members.remove', $m->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        class="px-3 py-1 bg-red-600 text-white rounded text-xs font-bold hover:bg-red-700">
+                    Retirer
+                </button>
+            </form>
+        @endif
+    </div>
+@endforeach
                         </div>
                     </div>
 
@@ -147,7 +171,7 @@
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="font-bold">Derniers paiements</h2>
                             <a href="{{ route('payments.create') }}"
-                               class="px-4 py-2 bg-white text-brand-green rounded hover:bg-gray-100 transition text-sm font-medium">
+                               class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 transition text-sm font-medium">
                                + Ajouter un paiement
                             </a>
                         </div>
@@ -166,10 +190,7 @@
                                     <p class="font-extrabold">
                                         {{ number_format($payment->amount, 2, ',', ' ') }} €
                                     </p>
-                                    <a href="{{ route('payments.regler', $payment->id) }}"
-                                       class="px-3 py-1 text-xs bg-white text-brand-green rounded hover:bg-gray-100 transition">
-                                       Régler
-                                    </a>
+
                                 </div>
                             </div>
                         @empty
