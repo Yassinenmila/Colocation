@@ -100,32 +100,23 @@ class ColocationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $colocation = Colocation::findOrFail($id);
-        $user = auth()->user();
-        if ($colocation->owner_id !== $user->id) {
-            abort(403, 'Seul le propriétaire de la colocation peut la supprimer.');
-        }
-        $colocation->delete();
-        return redirect()->route('home')->with('success', 'Colocation supprimée avec succès.');
+{
+    $colocation = Colocation::findOrFail($id);
+    $user = auth()->user();
+
+    if ($colocation->owner_id !== $user->id) {
+        abort(403, 'Seul le propriétaire de la colocation peut la supprimer.');
     }
+
+    $colocation->membreships()->delete();
+    $colocation->depenses()->delete();
+    $colocation->payments()->delete();
+
+    $colocation->delete();
+
+    return redirect()->route('home')->with('success', 'Colocation supprimée avec succès.');
+}
 }

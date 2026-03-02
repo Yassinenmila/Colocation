@@ -21,7 +21,7 @@ Route::get('/invitations/{token}', [App\Http\Controllers\InvitationController::c
 
 Route::middleware(['auth', 'banned'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
-    Route::resource('colocations', App\Http\Controllers\ColocationController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('colocations', App\Http\Controllers\ColocationController::class);
     Route::resource('categories', App\Http\Controllers\CategorieController::class);
     Route::resource('depenses', App\Http\Controllers\DepenseController::class);
     Route::resource('payments', App\Http\Controllers\PaymentController::class);
